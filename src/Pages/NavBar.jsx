@@ -26,7 +26,7 @@ const NavBar = () => {
                     </div>
 
                     <div className="items-center flex-shrink-0 hidden lg:flex">
-                        <button className="px-8 py-3 font-semibold rounded bg-violet-600 text-gray-50">Log in</button>
+                        <button className="btn btn-outline btn-warning">Log in</button>
                     </div>
 
                     <div className='lg:hidden dropdown w-full flex justify-end'>
