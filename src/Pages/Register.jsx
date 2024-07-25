@@ -1,16 +1,57 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { ContextProvider } from '../Contexts/AuthContext';
+import { updateProfile } from 'firebase/auth';
 
 const Register = () => {
-    
-    const handleSubmit = e =>{
+    const { createNewUser } = useContext(ContextProvider)
+    const navigate = useNavigate();
+    const handleSubmit = async e => {
         e.preventDefault();
         const form = e.target;
         const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
         const photo = form.photoUrl.value;
-        const newUser = {name,email,password,photo};
-        console.log(newUser)
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+        {
+            toast.error('Invalid Email Address')
+            return;
+        }
+        if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(password))
+        {
+            toast.error('Invalid Password')
+            return;
+        }
+        if(!name)
+        {
+            toast.error('Name must be provided')
+            return;
+        }
+        if(!photo)
+        {
+            toast.error('Photo URL must be provided')
+            return;
+        }
+        try {
+            const { user } = await createNewUser(email, password)
+            if (user) {
+                await updateProfile(user, {
+                    displayName: name,
+                    photoURL: photo
+                })
+                toast.success('User created successfully')
+                form.reset();
+                 navigate('/login')
+            }
+            else {
+                toast.error('Failed to create user')
+            }
+        }
+        catch (error) {
+            toast.error('Oops! Something went wrong for creating user')
+        }
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -27,7 +68,7 @@ const Register = () => {
                             name="name"
                             placeholder="Your Name"
                             className="input input-bordered w-full"
-                          
+
                         />
                     </div>
                     <div className="mb-4">
@@ -40,7 +81,7 @@ const Register = () => {
                             name="email"
                             placeholder="Your Email"
                             className="input input-bordered w-full"
-                          
+
                         />
                     </div>
                     <div className="mb-4">
@@ -53,7 +94,7 @@ const Register = () => {
                             name="password"
                             placeholder="Your Password"
                             className="input input-bordered w-full"
-                           
+
                         />
                     </div>
                     <div className="mb-4">
@@ -66,9 +107,12 @@ const Register = () => {
                             name="photoUrl"
                             placeholder="Photo URL"
                             className="input input-bordered w-full"
-                          
+
                         />
                     </div>
+                    <label className="label">
+                        <Link to={'/login'} className="label-text-alt link link-hover">Already Have Account? Login</Link>
+                    </label>
                     <div className="flex items-center justify-between">
                         <button type="submit" className="btn btn-primary w-full">
                             Register
