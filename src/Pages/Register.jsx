@@ -2,8 +2,9 @@ import React from 'react';
 
 const Register = () => {
     return (
-        <div>
-            This is Register
+        <div className='w-full h-[500px] flex justify-center items-center'>
+           
+
         </div>
     );
 };
