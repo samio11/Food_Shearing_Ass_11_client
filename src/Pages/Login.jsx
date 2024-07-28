@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { ContextProvider } from '../Contexts/AuthContext';
 import { Helmet } from 'react-helmet-async';
 const Login = () => {
-    const { loggedUser } = useContext(ContextProvider)
+    const { loggedUser,googleLogin } = useContext(ContextProvider)
     const navigate = useNavigate()
     const handleLogin = async e => {
         e.preventDefault();
@@ -33,6 +33,19 @@ const Login = () => {
         }
         catch (error) {
             toast.error('Login Failed')
+        }
+    }
+    const handleGoogle = async ()=>{
+        try{
+            const { user } = await googleLogin()
+            if(user){
+                toast.success('Google Login Successful')
+                navigate('/')
+            }
+        }
+        catch(error){
+            console.log(error)
+            toast.error('Google Login Failed')
         }
     }
     return (
@@ -67,7 +80,7 @@ const Login = () => {
                             </div>
                             <p className='text-center text-xs'>-- OR  --</p>
                             <div className='flex justify-center items-center'>
-                                <button className="btn btn-warning btn-outline btn-wide"> <FaGoogle /> Google Login</button>
+                                <button onClick={handleGoogle} className="btn btn-warning btn-outline btn-wide"> <FaGoogle /> Google Login</button>
                             </div>
                         </form>
                     </div>
