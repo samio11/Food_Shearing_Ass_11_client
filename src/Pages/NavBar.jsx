@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
+import { ContextProvider } from '../Contexts/AuthContext';
+import toast from 'react-hot-toast';
 const NavBar = () => {
     const navigate = useNavigate();
+    const {user,logOut} = useContext(ContextProvider);
+    console.log(user)
+    const handleLogOut =async () =>{
+        try{
+           await logOut()
+            toast.success('Logged Out Successfully')
+        }
+        catch(error){
+            toast.error('Error Loggin Out')
+        }
+    }
     const navLinks = <>
         <li className="flex">
             <NavLink
@@ -50,7 +63,16 @@ const NavBar = () => {
                     </div>
                     {/* Condition wise login here */}
                     <div className="items-center flex-shrink-0 hidden lg:flex">
-                        <button onClick={()=>navigate('/login')} className="btn btn-outline btn-warning">Log in</button>
+                       {
+                        user? <div className='flex justify-center items-center gap-2'>
+                            <div className='flex justify-center items-center gap-2 border-2 p-2 rounded-3xl'>
+                                <img title={user?.email} src={user?.photoURL || "https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg"} className='w-[40px] h-[40px] rounded-full' alt={user?.displayName} />
+                                <p className='text-xs font-bold text-yellow-500'>{user?.displayName}</p>
+                            </div>
+                            <button onClick={handleLogOut} className="btn btn-outline btn-warning">Log Out</button>
+                        </div> : 
+                         <button onClick={()=>navigate('/login')} className="btn btn-outline btn-warning">Log in</button>
+                       }
                     </div>
 
                     <div className='lg:hidden dropdown w-full flex justify-end'>
