@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { ContextProvider } from '../Contexts/AuthContext';
 import { updateProfile } from 'firebase/auth';
+import { Helmet } from 'react-helmet-async';
 
 const Register = () => {
     const { createNewUser } = useContext(ContextProvider)
@@ -55,6 +56,9 @@ const Register = () => {
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
+             <Helmet>
+                <title>ShareByte | Registration</title>
+             </Helmet>
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
                 <h2 className="text-2xl font-bold mb-5 text-center">Register</h2>
                 <form onSubmit={handleSubmit}>

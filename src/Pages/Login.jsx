@@ -5,40 +5,41 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa6";
 import toast from 'react-hot-toast';
 import { ContextProvider } from '../Contexts/AuthContext';
+import { Helmet } from 'react-helmet-async';
 const Login = () => {
-    const {loggedUser} = useContext(ContextProvider)
+    const { loggedUser } = useContext(ContextProvider)
     const navigate = useNavigate()
-    const handleLogin =async e =>{
-       e.preventDefault();
-       const form = e.target;
-       const email = form.email.value;
-       const password = form.password.value;
-       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-        {
+    const handleLogin = async e => {
+        e.preventDefault();
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             toast.error('Invalid Email Address')
             return;
         }
-        if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(password))
-        {
+        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(password)) {
             toast.error('Invalid Password')
             return;
         }
-       const loggedUser1 = {email,password};
-       console.log(loggedUser1)
-       try{
-        const {user} = await loggedUser(email,password)
-        if(user)
-        {
-            toast.success('Login Successful')
-            navigate('/')
+        const loggedUser1 = { email, password };
+        console.log(loggedUser1)
+        try {
+            const { user } = await loggedUser(email, password)
+            if (user) {
+                toast.success('Login Successful')
+                navigate('/')
+            }
         }
-       }
-       catch(error){
-        toast.error('Login Failed')
-       }
+        catch (error) {
+            toast.error('Login Failed')
+        }
     }
     return (
         <div>
+            <Helmet>
+            <title>ShareByte | Login</title>
+            </Helmet>
             <div className="hero bg-base-200 min-h-screen">
                 <div className="hero-content flex-col lg:flex-row-reverse">
                     <div className="text-center lg:text-left">
