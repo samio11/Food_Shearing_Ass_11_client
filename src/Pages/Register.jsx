@@ -51,6 +51,7 @@ const Register = () => {
             }
         }
         catch (error) {
+            console.log(error)
             toast.error('Oops! Something went wrong for creating user')
         }
     }

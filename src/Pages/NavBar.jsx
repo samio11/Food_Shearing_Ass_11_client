@@ -2,33 +2,35 @@ import React, { useContext, useEffect, useState } from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
 import { ContextProvider } from '../Contexts/AuthContext';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 const NavBar = () => {
     const navigate = useNavigate();
     const { user, logOut } = useContext(ContextProvider);
-    const [theme,setTheme] = useState('light')
-    console.log(user)
-     
-    const handleThemeChange = (e) =>{
-        if(e.target.checked)
-        {
+    const [theme, setTheme] = useState('light')
+    const handleThemeChange = (e) => {
+        if (e.target.checked) {
             setTheme('dark')
         }
-        else{
+        else {
             setTheme('light')
         }
     }
 
-    useEffect(()=>{
-        localStorage.setItem('theme',theme)
+    useEffect(() => {
+        localStorage.setItem('theme', theme)
         const localTheme = localStorage.getItem('theme')
-        document.querySelector('html').setAttribute('data-theme',localTheme)
-    },[theme])
+        document.querySelector('html').setAttribute('data-theme', localTheme)
+    }, [theme])
 
 
     const handleLogOut = async () => {
         try {
-            await logOut()
-            toast.success('Logged Out Successfully')
+
+            const { data } = await axios(`${import.meta.env.VITE_BACKEND_URL}/logout`,{ withCredentials: true })
+            if (data) {
+                await logOut()
+                toast.success('Logged Out Successfully')
+            }
         }
         catch (error) {
             toast.error('Error Loggin Out')
@@ -55,22 +57,22 @@ const NavBar = () => {
                 Available Foods
             </NavLink>
         </li>
-        
+
         {
             user ? <li className='flex lg:hidden'>
                 <button onClick={handleLogOut} className="flex items-center px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-400">
                     Log Out
                 </button>
             </li> : <li className="flex lg:hidden">
-            <NavLink
-                to="login"
-                className={({ isActive, isPending }) =>
-                    isPending ? "" : isActive ? "flex items-center px-4 -mb-1 border-b-2 border-transparent text-yellow-600 border-yellow-600" : "flex items-center px-4 -mb-1 border-b-2 border-transparent"
-                }
-            >
-                LogIn
-            </NavLink>
-        </li>
+                <NavLink
+                    to="login"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "" : isActive ? "flex items-center px-4 -mb-1 border-b-2 border-transparent text-yellow-600 border-yellow-600" : "flex items-center px-4 -mb-1 border-b-2 border-transparent"
+                    }
+                >
+                    LogIn
+                </NavLink>
+            </li>
         }
     </>
     return (
@@ -92,7 +94,7 @@ const NavBar = () => {
                         {
                             user ? <div className='flex justify-center items-center gap-4'>
                                 <div className='flex justify-center items-center gap-2 border-2 p-2 rounded-3xl'>
-                                    <img title={user?.email} src={user?.photoURL || "https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg"} className='w-[40px] h-[40px] rounded-full' alt={user?.displayName} />
+                                    <img referrerPolicy='no-referrer' title={user?.email} src={user?.photoURL || "https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg"} className='w-[40px] h-[40px] rounded-full' alt={user?.displayName} />
                                     <p className='text-xs font-bold text-yellow-500'>{user?.displayName}</p>
                                 </div>
                                 <div>

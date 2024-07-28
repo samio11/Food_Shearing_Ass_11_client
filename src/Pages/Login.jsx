@@ -6,8 +6,9 @@ import { FaGoogle } from "react-icons/fa6";
 import toast from 'react-hot-toast';
 import { ContextProvider } from '../Contexts/AuthContext';
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
 const Login = () => {
-    const { loggedUser,googleLogin } = useContext(ContextProvider)
+    const { loggedUser, googleLogin } = useContext(ContextProvider)
     const navigate = useNavigate()
     const handleLogin = async e => {
         e.preventDefault();
@@ -22,28 +23,33 @@ const Login = () => {
             toast.error('Invalid Password')
             return;
         }
-        const loggedUser1 = { email, password };
-        console.log(loggedUser1)
         try {
             const { user } = await loggedUser(email, password)
             if (user) {
-                toast.success('Login Successful')
-                navigate('/')
+                console.log(user)
+                const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/jwt`, { email: user?.email }, { withCredentials: true })
+                if (data) {
+                    toast.success('Login Successful')
+                    navigate('/')
+                }
             }
         }
         catch (error) {
             toast.error('Login Failed')
         }
     }
-    const handleGoogle = async ()=>{
-        try{
+    const handleGoogle = async () => {
+        try {
             const { user } = await googleLogin()
-            if(user){
-                toast.success('Google Login Successful')
-                navigate('/')
+            if (user) {
+                const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/jwt`, { email: user?.email }, { withCredentials: true })
+                if (data) {
+                    toast.success('Google Login Successful')
+                    navigate('/')
+                }
             }
         }
-        catch(error){
+        catch (error) {
             console.log(error)
             toast.error('Google Login Failed')
         }
@@ -51,7 +57,7 @@ const Login = () => {
     return (
         <div>
             <Helmet>
-            <title>ShareByte | Login</title>
+                <title>ShareByte | Login</title>
             </Helmet>
             <div className="hero bg-base-200 min-h-screen">
                 <div className="hero-content flex-col lg:flex-row-reverse">
