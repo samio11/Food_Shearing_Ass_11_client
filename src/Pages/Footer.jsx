@@ -8,7 +8,7 @@ const Footer = () => {
                 <img className="w-auto h-7 rounded-full" src="https://asset.brandfetch.io/idQUU5yo5I/idt5D_ZyWe.png" alt="" />
             </a>
     
-            <p className="text-sm text-gray-600 dark:text-gray-300">© Copyright 2021. All Rights Reserved.</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">© Copyright 2024. All Rights Reserved.</p>
     
             <div className="flex -mx-2">
                 <a href="#" className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" aria-label="Reddit">
