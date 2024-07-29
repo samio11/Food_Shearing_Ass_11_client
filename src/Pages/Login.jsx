@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import loginAni from './LoginAni.json';
 import Lottie from "lottie-react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa6";
 import toast from 'react-hot-toast';
 import { ContextProvider } from '../Contexts/AuthContext';
@@ -10,6 +10,8 @@ import axios from 'axios';
 const Login = () => {
     const { loggedUser, googleLogin } = useContext(ContextProvider)
     const navigate = useNavigate()
+    const location = useLocation()
+    const requestedPath = location.state || '/';
     const handleLogin = async e => {
         e.preventDefault();
         const form = e.target;
@@ -30,7 +32,7 @@ const Login = () => {
                 const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/jwt`, { email: user?.email }, { withCredentials: true })
                 if (data) {
                     toast.success('Login Successful')
-                    navigate('/')
+                    navigate(requestedPath,{replace: true})
                 }
             }
         }
@@ -45,7 +47,7 @@ const Login = () => {
                 const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/jwt`, { email: user?.email }, { withCredentials: true })
                 if (data) {
                     toast.success('Google Login Successful')
-                    navigate('/')
+                    navigate(requestedPath,{replace: true})
                 }
             }
         }
