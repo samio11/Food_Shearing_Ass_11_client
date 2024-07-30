@@ -1,20 +1,19 @@
 import React, { useContext, useState } from 'react';
-
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
 import { ContextProvider } from '../Contexts/AuthContext';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-
-const AddFood = () => {
+const MyFoodUpdate = () => {
     const [startDate, setStartDate] = useState(new Date());
     const {user} = useContext(ContextProvider)
+    const params = useParams()
     const navigate = useNavigate()
-    console.log(user)
-    const handleGetData =async e =>{
+    const dataSelect = useLoaderData();
+    console.log(dataSelect)
+    const handleGetData = async e => {
         e.preventDefault();
         const form = e.target;
         const food_name = form.food_name.value;
@@ -29,22 +28,26 @@ const AddFood = () => {
             Email: user?.email,
             Image: user?.photoURL
         }
-        const totalData = {Food_Name: food_name,Food_Image: food_image,Food_Quantity: food_quantity,Pickup_Location: location,Expired_Date_Time: expire_date,Additional_Notes: additional_note,Donator,Status}
+        const totalData = { Food_Name: food_name, Food_Image: food_image, Food_Quantity: food_quantity, Pickup_Location: location, Expired_Date_Time: expire_date, Additional_Notes: additional_note, Donator, Status }
         console.log(totalData)
-         const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/add_food`,totalData)
-         if(data)
-         {
-            toast.success("Food added successfully")
-            navigate('/added_food_manage')
-         }
+        try {
+            const { data } =await axios.put(`${import.meta.env.VITE_BACKEND_URL}/my_food/${params.id}`, totalData)
+            if (data) {
+                toast.success('Your Food Updated Successfully');
+                navigate('/added_food_manage')
+            }
+        }
+        catch (error) {
+            console.error(error)
+        }
     }
     return (
         <div>
             <Helmet>
-                <title>ShareByte | Added Food</title>
+                <title>ShareByte | Update Food</title>
             </Helmet>
             <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-lg">
-                <h1 className="text-2xl font-bold mb-6 text-center">Add Food</h1>
+                <h1 className="text-2xl font-bold mb-6 text-center">Update My Food</h1>
                 <form onSubmit={handleGetData}>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="food_name">
@@ -53,6 +56,7 @@ const AddFood = () => {
                         <input
                             id="email"
                             type="text"
+                            defaultValue={dataSelect?.Food_Name}
                             name='food_name'
                             placeholder="Enter Food Name"
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -66,6 +70,7 @@ const AddFood = () => {
                             id="jobTitle"
                             type="text"
                             name='food_image'
+                            defaultValue={dataSelect.Food_Image}
                             placeholder="Enter Url of Food Image"
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
@@ -78,6 +83,7 @@ const AddFood = () => {
                             id="jobTitle1"
                             type="text"
                             name='food_quantity'
+                            defaultValue={dataSelect.Food_Quantity}
                             placeholder="Enter Food Quantity"
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
@@ -96,6 +102,7 @@ const AddFood = () => {
                         <textarea
                             id="description"
                             name='description'
+                            defaultValue={dataSelect.Additional_Notes}
                             placeholder="Please enter description"
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             rows="3"
@@ -109,6 +116,7 @@ const AddFood = () => {
                             id="minPrice"
                             name='location'
                             type="text"
+                            defaultValue={dataSelect.Pickup_Location}
                             placeholder="Enter Location"
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
@@ -127,4 +135,4 @@ const AddFood = () => {
     );
 };
 
-export default AddFood;
+export default MyFoodUpdate;

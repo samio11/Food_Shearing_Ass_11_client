@@ -44,7 +44,6 @@ const Home = () => {
             break;
         }
     }
-    console.log(sortedTopSix)
     return (
         <div>
             <Helmet>

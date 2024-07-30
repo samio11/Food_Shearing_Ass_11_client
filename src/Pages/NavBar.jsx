@@ -87,6 +87,19 @@ const NavBar = () => {
             </NavLink>
         </li>
         }
+        {
+            user &&
+            <li className="flex">
+            <NavLink
+                to="/added_food_manage"
+                className={({ isActive, isPending }) =>
+                    isPending ? "" : isActive ? "flex items-center px-4 -mb-1 border-b-2 border-transparent text-yellow-600 border-yellow-600" : "flex items-center px-4 -mb-1 border-b-2 border-transparent"
+                }
+            >
+                My Manageable Food
+            </NavLink>
+        </li>
+        }
     </>
     return (
         <div>
