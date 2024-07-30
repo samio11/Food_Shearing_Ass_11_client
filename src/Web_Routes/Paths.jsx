@@ -10,6 +10,7 @@ import AddFood from '../Pages/AddFood';
 import PrivateRoute from '../Pages/PrivateRoute';
 import MyAddedFoodManage from '../Pages/MyAddedFoodManage';
 import MyFoodUpdate from '../Pages/MyFoodUpdate';
+import FoodInfo from '../Pages/FoodInfo';
 
 const Paths = createBrowserRouter([
     {
@@ -45,6 +46,11 @@ const Paths = createBrowserRouter([
                 path: '/update_food_manage/:id',
                 element: <PrivateRoute><MyFoodUpdate></MyFoodUpdate></PrivateRoute>,
                 loader: ({params})=>fetch(`${import.meta.env.VITE_BACKEND_URL}/my_food_data/${params.id}`)
+            },
+            {
+                path: '/food_info/:id',
+                element: <PrivateRoute><FoodInfo></FoodInfo></PrivateRoute>,
+                loader: ({params})=>fetch(`${import.meta.env.VITE_BACKEND_URL}/food_info/${params.id}`)
             }
         ]
     }

@@ -135,7 +135,7 @@ const Home = () => {
                                                     <h2 className='text-xs text-gray-500 italic'>{x.Expired_Date_Time}</h2>
                                                 </div>
                                                 <div className='flex items-center gap-2 my-4'>
-                                                    <button className='btn btn-outline btn-warning'>View More</button>
+                                                    <Link to={`/food_info/${x._id}`} className='btn btn-outline btn-warning'>View More</Link>
                                                 </div>
                                             </div>
                                         </div>
