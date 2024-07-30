@@ -100,6 +100,19 @@ const NavBar = () => {
             </NavLink>
         </li>
         }
+        {
+            user &&
+            <li className="flex">
+            <NavLink
+                to="/requested_food"
+                className={({ isActive, isPending }) =>
+                    isPending ? "" : isActive ? "flex items-center px-4 -mb-1 border-b-2 border-transparent text-yellow-600 border-yellow-600" : "flex items-center px-4 -mb-1 border-b-2 border-transparent"
+                }
+            >
+                My Requested Food
+            </NavLink>
+        </li>
+        }
     </>
     return (
         <div>

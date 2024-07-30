@@ -11,6 +11,7 @@ import PrivateRoute from '../Pages/PrivateRoute';
 import MyAddedFoodManage from '../Pages/MyAddedFoodManage';
 import MyFoodUpdate from '../Pages/MyFoodUpdate';
 import FoodInfo from '../Pages/FoodInfo';
+import MyRequestedFood from '../Pages/MyRequestedFood';
 
 const Paths = createBrowserRouter([
     {
@@ -51,6 +52,10 @@ const Paths = createBrowserRouter([
                 path: '/food_info/:id',
                 element: <PrivateRoute><FoodInfo></FoodInfo></PrivateRoute>,
                 loader: ({params})=>fetch(`${import.meta.env.VITE_BACKEND_URL}/food_info/${params.id}`)
+            },
+            {
+                path: '/requested_food',
+                element: <PrivateRoute><MyRequestedFood></MyRequestedFood></PrivateRoute>,
             }
         ]
     }
