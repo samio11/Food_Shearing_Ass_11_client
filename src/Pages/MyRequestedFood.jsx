@@ -11,7 +11,6 @@ const MyRequestedFood = () => {
         const { data } = await axios(`${import.meta.env.VITE_BACKEND_URL}/my_requested_food`, { withCredentials: true })
         setLoadData(data)
     }
-    console.log(loadData)
     return (
         <div>
             <Helmet>

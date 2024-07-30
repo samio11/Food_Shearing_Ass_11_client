@@ -116,7 +116,7 @@ const NavBar = () => {
     </>
     return (
         <div>
-            <header className="p-4 navbar bg-gray-100 text-gray-800">
+            <header className="p-4 navbar shadow-md text-gray-800">
                 <div className="container flex justify-between h-16 mx-auto">
                     <div className="flex">
                         <a rel="noopener noreferrer" href="#" aria-label="Back to homepage" className="flex items-center p-2">
