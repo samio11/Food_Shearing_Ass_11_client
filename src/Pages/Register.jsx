@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { ContextProvider } from '../Contexts/AuthContext';
 import { updateProfile } from 'firebase/auth';
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
 
 const Register = () => {
+    const location = useLocation()
+    const requestedPath = location.state || '/';
     const { createNewUser } = useContext(ContextProvider)
     const navigate = useNavigate();
     const handleSubmit = async e => {
@@ -42,9 +45,11 @@ const Register = () => {
                     displayName: name,
                     photoURL: photo
                 })
-                toast.success('User created successfully')
-                form.reset();
-                 navigate('/login')
+                const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/jwt`, { email: user?.email }, { withCredentials: true })
+                if (data) {
+                    toast.success('Login Successful')
+                    navigate(requestedPath,{replace: true})
+                }
             }
             else {
                 toast.error('Failed to create user')
